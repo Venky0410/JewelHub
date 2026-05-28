@@ -92,8 +92,23 @@ def product_detail(product_id):
     except:
         return redirect(url_for('products'))
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
+    if request.method == 'POST':
+        user_id = session.get('user_id', 'guest')
+        data = request.get_json()
+        try:
+            response = requests.post(
+                f'{CART_SERVICE}/cart/{user_id}/add',
+                json=data)
+            return jsonify(response.json())
+        except Exception as e:
+            return jsonify({
+                "success": False,
+                "error": str(e)
+            }), 500
+
+    # GET request
     user_id = session.get('user_id', 'guest')
     try:
         response = requests.get(
@@ -103,8 +118,10 @@ def cart():
                              cart=data)
     except:
         return render_template('cart.html',
-                             cart={"items": [],
-                                   "total": 0})
+                             cart={
+                                 "items": [],
+                                 "total": 0
+                             })
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -136,7 +153,6 @@ def register():
                 json=data)
             result = response.json()
             if result.get('success'):
-                # Send welcome notification
                 requests.post(
                     f'{NOTIFICATION_SERVICE}/notify/welcome',
                     json={

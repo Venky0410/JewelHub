@@ -7,8 +7,8 @@
 </div>
 
 <div class="cart-container">
-    {% if cart.items %}
-        {% for item in cart.items %}
+    {% if cart['items'] %}
+        {% for item in cart['items'] %}
         <div class="cart-item">
             <img src="{{ item.image }}"
                  alt="{{ item.name }}">

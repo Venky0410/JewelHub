@@ -5,7 +5,6 @@ app = Flask(__name__)
 CORS(app)
 
 # In-memory cart storage
-# In production this would be Redis
 # cart = { user_id: { product_id: {item details} } }
 carts = {}
 
@@ -21,8 +20,10 @@ def health():
 def get_cart(user_id):
     cart = carts.get(user_id, {})
     items = list(cart.values())
-    total = sum(item['price'] * item['quantity']
-                for item in items)
+    total = sum(
+        item['price'] * item['quantity']
+        for item in items
+    )
     return jsonify({
         "success": True,
         "user_id": user_id,
@@ -34,6 +35,7 @@ def get_cart(user_id):
 @app.route('/cart/<user_id>/add', methods=['POST'])
 def add_to_cart(user_id):
     data = request.get_json()
+
     if not data:
         return jsonify({
             "success": False,
@@ -41,6 +43,7 @@ def add_to_cart(user_id):
         }), 400
 
     product_id = str(data.get('product_id'))
+
     if not product_id:
         return jsonify({
             "success": False,
@@ -93,6 +96,7 @@ def update_quantity(user_id):
         })
 
     carts[user_id][product_id]['quantity'] = quantity
+
     return jsonify({
         "success": True,
         "message": "Cart updated",

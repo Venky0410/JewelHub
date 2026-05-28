@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if product %}
+<div style="max-width:1000px;margin:40px auto;
+            padding:0 40px;display:flex;
+            gap:40px;flex-wrap:wrap">
+
+    <!-- Product Image -->
+    <div style="flex:1;min-width:300px">
+        <img src="{{ product.image }}"
+             alt="{{ product.name }}"
+             style="width:100%;border-radius:8px;
+                    box-shadow:0 4px 16px rgba(0,0,0,0.1)">
+    </div>
+
+    <!-- Product Details -->
+    <div style="flex:1;min-width:300px">
+        <p style="color:#888;font-size:14px;
+                  letter-spacing:2px;margin-bottom:8px">
+            {{ product.category | upper }}
+        </p>
+        <h1 style="font-size:32px;color:#1a1a1a;
+                   margin-bottom:16px">
+            {{ product.name }}
+        </h1>
+        <p style="color:#888;font-size:14px;
+                  margin-bottom:16px">
+            {{ product.material }}
+        </p>
+        <p style="color:#d4af37;font-size:32px;
+                  font-weight:bold;margin-bottom:24px">
+            ₹{{ product.price }}
+        </p>
+        <p style="color:#555;line-height:1.8;
+                  margin-bottom:32px">
+            {{ product.description }}
+        </p>
+
+        <!-- Tags -->
+        <div style="margin-bottom:32px">
+            <span style="background:#f5f5f5;
+                         padding:6px 16px;
+                         border-radius:24px;
+                         font-size:12px;
+                         margin-right:8px">
+                {{ product.gender | upper }}
+            </span>
+            <span style="background:#f5f5f5;
+                         padding:6px 16px;
+                         border-radius:24px;
+                         font-size:12px">
+                {% if product.in_stock %}
+                    ✅ In Stock
+                {% else %}
+                    ❌ Out of Stock
+                {% endif %}
+            </span>
+        </div>
+
+        <!-- Add to Cart Button -->
+        {% if product.in_stock %}
+        <button class="btn" style="width:100%;
+                padding:16px;font-size:16px"
+                onclick="addToCart()">
+            🛒 ADD TO CART
+        </button>
+        {% else %}
+        <button class="btn" style="width:100%;
+                padding:16px;font-size:16px;
+                opacity:0.5;cursor:not-allowed">
+            OUT OF STOCK
+        </button>
+        {% endif %}
+
+        <div id="alert" style="margin-top:16px"></div>
+
+        <!-- Back Button -->
+        <a href="/products"
+           style="display:block;text-align:center;
+                  margin-top:16px;color:#888;
+                  text-decoration:none;font-size:14px">
+            ← Back to Products
+        </a>
+    </div>
+</div>
+
+<!-- Related Products Section -->
+<div class="section-header">
+    <h2>YOU MIGHT ALSO LIKE</h2>
+    <div class="gold-line"></div>
+</div>
+
+{% else %}
+<div style="text-align:center;padding:60px">
+    <p style="font-size:48px">💍</p>
+    <h3 style="margin:16px 0">Product not found</h3>
+    <a href="/products" class="btn">
+        Back to Products
+    </a>
+</div>
+{% endif %}
+
+<script>
+function addToCart() {
+    fetch('/cart', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            product_id: {{ product.id }},
+            name: '{{ product.name }}',
+            price: {{ product.price }},
+            image: '{{ product.image }}'
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if(data.success) {
+            document.getElementById('alert').innerHTML =
+                `<div class="alert alert-success">
+                    ✅ Added to cart successfully!
+                </div>`;
+        } else {
+            document.getElementById('alert').innerHTML =
+                `<div class="alert alert-error">
+                    ❌ ${data.error}
+                </div>`;
+        }
+    });
+}
+</script>
+
+{% endblock %}
