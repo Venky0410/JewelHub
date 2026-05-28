@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="section-header">
+    <h2>{{ title | upper }}</h2>
+    <div class="gold-line"></div>
+    <p>{{ products | length }} products found</p>
+</div>
+
+<div class="categories">
+    <a href="/products" class="category-btn">All</a>
+    <a href="/him" class="category-btn">For Him</a>
+    <a href="/her" class="category-btn">For Her</a>
+</div>
+
+<div class="products-grid">
+    {% for product in products %}
+    <div class="product-card"
+         onclick="window.location='/product/{{ product.id }}'">
+        <img src="{{ product.image }}"
+             alt="{{ product.name }}">
+        <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="material">{{ product.material }}</p>
+            <p class="price">₹{{ product.price }}</p>
+            <button class="btn"
+                    style="width:100%"
+                    onclick="event.stopPropagation();
+                             addToCart({{ product.id }},
+                             '{{ product.name }}',
+                             {{ product.price }},
+                             '{{ product.image }}')">
+                Add to Cart
+            </button>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align:center;color:#888;
+              grid-column:1/-1;padding:40px">
+        No products found
+    </p>
+    {% endfor %}
+</div>
+
+<script>
+function addToCart(productId, name, price, image) {
+    fetch('/cart', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            product_id: productId,
+            name: name,
+            price: price,
+            image: image
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if(data.success) {
+            alert('Added to cart!');
+        }
+    });
+}
+</script>
+
+{% endblock %}

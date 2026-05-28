@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JewelHub — Handcrafted Silver Jewellery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #fafaf8;
+            color: #2c2c2c;
+        }
+
+        /* Navbar */
+        nav {
+            background: #1a1a1a;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #d4af37;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #ffffff;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        nav ul a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        nav ul a:hover { color: #d4af37; }
+
+        .cart-icon {
+            background: #d4af37;
+            color: #1a1a1a !important;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: #d4af37;
+            margin-bottom: 16px;
+            letter-spacing: 4px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #d4af37;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover { background: #b8962e; }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        /* Product Cards */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .product-info .price {
+            color: #d4af37;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .product-info .material {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            padding: 48px 40px 24px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            color: #1a1a1a;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .gold-line {
+            width: 60px;
+            height: 2px;
+            background: #d4af37;
+            margin: 12px auto;
+        }
+
+        /* Category Buttons */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 24px 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 24px;
+            border: 1px solid #d4af37;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 24px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: #d4af37;
+            color: #1a1a1a;
+        }
+
+        /* Cart */
+        .cart-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .cart-total {
+            text-align: right;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .cart-total h3 {
+            font-size: 24px;
+            color: #d4af37;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 480px;
+            margin: 60px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 32px;
+            color: #1a1a1a;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #d4af37;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #888;
+            text-align: center;
+            padding: 32px 40px;
+            margin-top: 60px;
+        }
+
+        footer .logo {
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* Alert messages */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .hero h1 { font-size: 32px; }
+            .products-grid { padding: 20px; }
+            nav ul { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+    <a href="/" class="logo">Jewel<span>Hub</span></a>
+    <ul>
+        <li><a href="/products">Shop</a></li>
+        <li><a href="/him">For Him</a></li>
+        <li><a href="/her">For Her</a></li>
+        {% if session.get('user_name') %}
+            <li><a href="/orders">Orders</a></li>
+            <li><a href="/logout">Logout ({{ session.get('user_name') }})</a></li>
+        {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        {% endif %}
+        <li><a href="/cart" class="cart-icon">🛒 Cart</a></li>
+    </ul>
+</nav>
+
+<!-- Page Content -->
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+<footer>
+    <a href="/" class="logo">Jewel<span>Hub</span></a>
+    <p>Handcrafted Sterling Silver Jewellery</p>
+    <p style="margin-top: 8px;">© 2025 JewelHub. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

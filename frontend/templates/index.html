@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>JEWELHUB</h1>
+    <p>Handcrafted Sterling Silver Jewellery</p>
+    <a href="/products" class="btn">Shop Now</a>
+    &nbsp;&nbsp;
+    <a href="/her" class="btn btn-outline">For Her</a>
+</div>
+
+<!-- Shop by Gender -->
+<div class="section-header">
+    <h2>SHOP BY COLLECTION</h2>
+    <div class="gold-line"></div>
+    <p>Discover our exclusive collections</p>
+</div>
+
+<div class="categories">
+    <a href="/products" class="category-btn">All</a>
+    <a href="/him" class="category-btn">For Him</a>
+    <a href="/her" class="category-btn">For Her</a>
+    <a href="/products?category=rings" class="category-btn">Rings</a>
+    <a href="/products?category=necklaces" class="category-btn">Necklaces</a>
+    <a href="/products?category=bracelets" class="category-btn">Bracelets</a>
+    <a href="/products?category=earrings" class="category-btn">Earrings</a>
+</div>
+
+<!-- Featured Products -->
+<div class="section-header">
+    <h2>FEATURED PRODUCTS</h2>
+    <div class="gold-line"></div>
+</div>
+
+<div class="products-grid">
+    {% for product in featured %}
+    <div class="product-card"
+         onclick="window.location='/product/{{ product.id }}'">
+        <img src="{{ product.image }}"
+             alt="{{ product.name }}">
+        <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="material">{{ product.material }}</p>
+            <p class="price">₹{{ product.price }}</p>
+            <a href="/product/{{ product.id }}"
+               class="btn" style="width:100%;text-align:center">
+               View Details
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align:center;color:#888;grid-column:1/-1">
+        Products loading...
+    </p>
+    {% endfor %}
+</div>
+
+{% endblock %}

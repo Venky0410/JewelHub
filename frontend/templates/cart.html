@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="section-header">
+    <h2>YOUR CART</h2>
+    <div class="gold-line"></div>
+</div>
+
+<div class="cart-container">
+    {% if cart.items %}
+        {% for item in cart.items %}
+        <div class="cart-item">
+            <img src="{{ item.image }}"
+                 alt="{{ item.name }}">
+            <div style="flex:1">
+                <h3>{{ item.name }}</h3>
+                <p style="color:#888">
+                    Qty: {{ item.quantity }}
+                </p>
+            </div>
+            <div>
+                <p class="price" style="color:#d4af37;
+                   font-size:18px;font-weight:bold">
+                    ₹{{ item.price * item.quantity }}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="cart-total">
+            <p style="color:#888;margin-bottom:8px">
+                Total Amount
+            </p>
+            <h3>₹{{ cart.total }}</h3>
+            <br>
+            <a href="/checkout" class="btn">
+                Proceed to Checkout
+            </a>
+        </div>
+    {% else %}
+        <div style="text-align:center;padding:60px">
+            <p style="font-size:48px">🛒</p>
+            <h3 style="margin:16px 0">
+                Your cart is empty
+            </h3>
+            <a href="/products" class="btn">
+                Start Shopping
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
