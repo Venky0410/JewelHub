@@ -65,6 +65,17 @@ User → Load Balancer → Frontend (5000)
 
 ---
 
+## 🔄 CI/CD Pipeline
+Automated with **GitHub Actions**:
+- Push to main → auto deploy
+- Builds all 6 Docker images
+- Pushes images to AWS ECR
+- Deploys to AWS EKS
+- Verifies deployment health
+- Zero manual steps!
+
+---
+
 ## 🚀 Deployment
 Built and deployed using:
 - Docker images pushed to AWS ECR
