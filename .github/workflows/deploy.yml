@@ -108,3 +108,26 @@ jobs:
         echo "🌍 JewelHub URL:"
         kubectl get svc frontend -n jewelhub \
           -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+
+
+    - name: Verify deployment
+      run: |
+        kubectl rollout status deployment/frontend -n jewelhub
+        kubectl rollout status deployment/product-service -n jewelhub
+        echo "✅ JewelHub deployed successfully!"
+
+    - name: Save and display JewelHub URL
+      run: |
+        echo "Waiting for Load Balancer URL..."
+        sleep 10
+        URL=$(kubectl get svc frontend -n jewelhub \
+          -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+        echo "🌍 JewelHub URL: http://$URL"
+        echo "## 🚀 Latest Deployment" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Detail | Value |" >> $GITHUB_STEP_SUMMARY
+        echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| 🌍 Live URL | http://$URL |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🏷️ Image Tag | ${{ env.IMAGE_TAG }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| ⏰ Deployed | $(date) |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🌿 Branch | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
