@@ -1,7 +1,14 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+
+# Static info metric
+metrics.info('jewelhub_service_info', 
+             'JewelHub Service Info', 
+             version='1.0.0')
 CORS(app)
 
 products = [

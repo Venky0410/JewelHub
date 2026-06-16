@@ -2,8 +2,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
 import uuid
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+
+# Static info metric
+metrics.info('jewelhub_service_info', 
+             'JewelHub Service Info', 
+             version='1.0.0')
 CORS(app)
 
 # In-memory order storage

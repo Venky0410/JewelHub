@@ -2,8 +2,15 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 from flask_cors import CORS
 import requests
 import os
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+
+# Static info metric
+metrics.info('jewelhub_service_info', 
+             'JewelHub Service Info', 
+             version='1.0.0')
 CORS(app)
 app.secret_key = 'jewelhub-secret-key'
 
