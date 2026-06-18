@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: cart-service
   namespace: jewelhub
+  labels:          
+    app: frontend
 spec:
   selector:
     app: cart-service
